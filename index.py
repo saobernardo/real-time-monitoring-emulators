@@ -7,6 +7,8 @@ import apsw.ext
 import sys
 import logging
 import shutil
+import os
+from pathlib import Path
 
 emulator = sys.argv
 emulator.pop(0)
@@ -26,10 +28,20 @@ folder_to_monitor = data[0]
 class EventHandler(FileSystemEventHandler):
   def on_any_event(self, event):
     if event.event_type == "created" or event.event_type == "modified":
-      shutil.copy2(event.src_path, data[1])
+      #shutil.copy2(r''+event.src_path, r''+data[1])
+      file_path = Path(os.path.dirname(r''+event.src_path))
 
-    print(f"Event type: {event.event_type}")
-    print(f"File path: {event.src_path}")
+      if not os.path.exists(os.path.join(data[1], str(file_path.parts[-1]))):
+        os.mkdir(os.path.join(data[1], str(file_path.parts[-1])))
+        print('Pasta %s criado', str(file_path.parts[-1]))
+
+      try:
+        shutil.copy2(r''+event.src_path, os.path.join(data[1], str(file_path.parts[-1])))
+        print('''Save files from '''+r''+event.src_path+''' copied to ''' + data[1])
+      except PermissionError as e:
+        print(f"Error: Permission denied for {os.path.join(data[1], str(file_path.parts[-1]))} - {e}")
+      except OSError as e:
+        print(f"Error copying {str(file_path.parts[-1])} to {os.path.join(data[1], str(file_path.parts[-1]))} - {e}")
 
 if __name__ == "__main__":
   logging.basicConfig(level=logging.INFO,

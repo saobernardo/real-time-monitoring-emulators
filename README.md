@@ -2,7 +2,7 @@
 
 ## Requesitos
 
--Python 3
+- Python 3
   - watchdog
     - Instale com o comando ```pip install watchdog``` 
   - apsw
