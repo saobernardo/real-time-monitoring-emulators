@@ -16,13 +16,17 @@ emulator.pop(0)
 if len(emulator) == 0:
   sys.exit('Nenhum emulador fornecido')
 
-connection = apsw.Connection('db.sqlite')
+connection = apsw.Connection(f'{os.getcwd()}/db.sqlite', flags=apsw.SQLITE_OPEN_READONLY)
 cursor = connection.cursor()
 
 query = "SELECT save_path, destination_path FROM emulators WHERE identification = ?1"
 data = (emulator)
 cursor.execute(query, data)
 data = cursor.fetchone()
+
+if data is None:
+  sys.exit('Emulador não encontrado')
+
 folder_to_monitor = data[0]
 
 class EventHandler(FileSystemEventHandler):

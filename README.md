@@ -1,9 +1,14 @@
-# Real-Time Monitoring - Emuladores
+# Real-Time Monitoring - Emulators
 
-## Requesitos
+## Requisites
 
 - Python 3
   - watchdog
-    - Instale com o comando ```pip install watchdog``` 
+    - Install with the command ```pip install watchdog``` 
   - apsw
-    - Instale com o comando ```pip install apsw```
+    - Install with the command ```pip install apsw```
+  - flet
+    - Install with the command ```pip install flet```
+
+## Execução
+  - In case you want to execute the back end directly, execute the command `py index.py [emulator_identifier]` 
