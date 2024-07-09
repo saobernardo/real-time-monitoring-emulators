@@ -1,0 +1,7 @@
+CREATE TABLE emulators(
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR(50) NOT NULL,
+  save_path VARCHAR(255) NOT NULL,
+  identification VARCHAR(50) NOT NULL,
+  destination_path VARCHAR(255) NOT NULL
+);
