@@ -1,2 +1,4 @@
 exec_ppsspp.bat
 db.sqlite
+
+venv/
