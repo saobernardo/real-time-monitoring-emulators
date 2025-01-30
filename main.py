@@ -22,12 +22,12 @@ cursor = connection.cursor()
 query = "SELECT save_path, destination_path FROM emulators WHERE identification = ?1"
 data = (emulator)
 cursor.execute(query, data)
-data = cursor.fetchone()
+dataCursor = cursor.fetchone()
 
-if data is None:
+if dataCursor is None:
   sys.exit('Emulador não encontrado')
 
-folder_to_monitor = data[0]
+folder_to_monitor = dataCursor[0]
 
 class EventHandler(FileSystemEventHandler):
   def on_any_event(self, event):
@@ -35,17 +35,17 @@ class EventHandler(FileSystemEventHandler):
       #shutil.copy2(r''+event.src_path, r''+data[1])
       file_path = Path(os.path.dirname(r''+event.src_path))
 
-      if not os.path.exists(os.path.join(data[1], str(file_path.parts[-1]))):
-        os.mkdir(os.path.join(data[1], str(file_path.parts[-1])))
+      if not os.path.exists(os.path.join(dataCursor[1], str(file_path.parts[-1]))):
+        os.mkdir(os.path.join(dataCursor[1], str(file_path.parts[-1])))
         print('Pasta %s criado', str(file_path.parts[-1]))
 
       try:
-        shutil.copy2(r''+event.src_path, os.path.join(data[1], str(file_path.parts[-1])))
-        print('''Save files from '''+r''+event.src_path+''' copied to ''' + data[1])
+        shutil.copy2(r''+event.src_path, os.path.join(dataCursor[1], str(file_path.parts[-1])))
+        print('''Save files from '''+r''+event.src_path+''' copied to ''' + dataCursor[1])
       except PermissionError as e:
-        print(f"Error: Permission denied for {os.path.join(data[1], str(file_path.parts[-1]))} - {e}")
+        print(f"Error: Permission denied for {os.path.join(dataCursor[1], str(file_path.parts[-1]))} - {e}")
       except OSError as e:
-        print(f"Error copying {str(file_path.parts[-1])} to {os.path.join(data[1], str(file_path.parts[-1]))} - {e}")
+        print(f"Error copying {str(file_path.parts[-1])} to {os.path.join(dataCursor[1], str(file_path.parts[-1]))} - {e}")
 
 if __name__ == "__main__":
   logging.basicConfig(level=logging.INFO,
