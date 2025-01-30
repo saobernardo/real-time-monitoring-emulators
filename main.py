@@ -31,8 +31,7 @@ folder_to_monitor = dataCursor[0]
 
 class EventHandler(FileSystemEventHandler):
   def on_any_event(self, event):
-    if event.event_type == "created" or event.event_type == "modified":
-      #shutil.copy2(r''+event.src_path, r''+data[1])
+    if "created" == event.event_type or "modified" == event.event_type:
       file_path = Path(os.path.dirname(r''+event.src_path))
 
       if not os.path.exists(os.path.join(dataCursor[1], str(file_path.parts[-1]))):
@@ -40,6 +39,7 @@ class EventHandler(FileSystemEventHandler):
         print('Pasta %s criado', str(file_path.parts[-1]))
 
       try:
+        valuePartPath = -1 if 'ppsspp' == emulator else -2
         shutil.copy2(r''+event.src_path, os.path.join(dataCursor[1], str(file_path.parts[-1])))
         print('''Save files from '''+r''+event.src_path+''' copied to ''' + dataCursor[1])
       except PermissionError as e:
